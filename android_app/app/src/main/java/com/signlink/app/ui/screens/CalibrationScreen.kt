@@ -218,13 +218,13 @@ private fun ReadyToStartContent(
             modifier = Modifier
                 .size(72.dp)
                 .clip(CircleShape)
-                .background(Color(0xFFE8F0FE)),
+                .background(MaterialTheme.colorScheme.primaryContainer),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.Default.BackHand,
                 contentDescription = null,
-                tint = Color(0xFF1A73E8),
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(36.dp)
             )
         }
@@ -239,14 +239,14 @@ private fun ReadyToStartContent(
                     fontSize = 28.sp
                 ),
                 textAlign = TextAlign.Center,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(Modifier.height(8.dp))
             Text(
                 text = "Follow the instructions to calibrate your wearable for accurate gesture recognition.",
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
-                color = Color(0xFF5F6368),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 lineHeight = 22.sp,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
@@ -261,8 +261,8 @@ private fun ReadyToStartContent(
                 Card(
                     modifier = Modifier.fillMaxWidth().height(60.dp),
                     shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF8F9FA)),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFDADCE0))
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 16.dp).fillMaxSize(),
@@ -272,13 +272,13 @@ private fun ReadyToStartContent(
                         Box(
                             modifier = Modifier
                                 .size(32.dp)
-                                .border(1.dp, Color(0xFFDADCE0), CircleShape),
+                                .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = step.number.toString(),
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Color(0xFF5F6368)
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
 
@@ -287,7 +287,7 @@ private fun ReadyToStartContent(
                         Text(
                             text = step.title,
                             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                            color = Color.Black
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -299,14 +299,14 @@ private fun ReadyToStartContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
-                .background(Color(0xFFE8F0FE))
-                .border(1.dp, Color(0xFFD2E3FC), RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f))
+                .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.5f), RoundedCornerShape(12.dp))
                 .padding(16.dp)
         ) {
             Text(
                 text = "Tip: Hold each gesture steady for 3 seconds. The device will vibrate when complete.",
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xFF1967D2),
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -325,7 +325,7 @@ private fun ReadyToStartContent(
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1A73E8))
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text(
                     text = "Start Calibration",
@@ -345,7 +345,7 @@ private fun ReadyToStartContent(
                         fontWeight = FontWeight.SemiBold,
                         textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline
                     ),
-                    color = Color(0xFF1A73E8)
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -376,13 +376,13 @@ private fun InProgressContent(
             modifier = Modifier
                 .size(80.dp)
                 .clip(CircleShape)
-                .background(Color(0xFFE8F0FE)),
+                .background(MaterialTheme.colorScheme.primaryContainer),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.Default.BackHand,
                 contentDescription = null,
-                tint = Color(0xFF1A73E8),
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(40.dp)
             )
         }
@@ -394,13 +394,13 @@ private fun InProgressContent(
                 text = "Device Calibration",
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(Modifier.height(8.dp))
             Text(
                 text = "Step ${state.step} of ${CALIBRATION_STEPS.size}",
                 style = MaterialTheme.typography.bodySmall,
-                color = Color(0xFF5F6368)
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
@@ -418,15 +418,15 @@ private fun InProgressContent(
         Box(
             modifier = Modifier
                 .size(130.dp)
-                .border(2.dp, Color(0xFF1A73E8), CircleShape)
-                .background(Color(0xFFE8F0FE).copy(alpha = 0.5f), CircleShape),
+                .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f), CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = remainingSeconds.toString(),
                 style = MaterialTheme.typography.displayMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF1A73E8)
+                    color = MaterialTheme.colorScheme.primary
                 )
             )
         }
@@ -439,14 +439,14 @@ private fun InProgressContent(
             Text(
                 text = currentStepData.title,
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(Modifier.height(8.dp))
             Text(
                 text = currentStepData.description,
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
-                color = Color(0xFF5F6368),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 lineHeight = 22.sp
             )
         }
@@ -466,8 +466,8 @@ private fun InProgressContent(
                     .fillMaxWidth()
                     .height(6.dp)
                     .clip(RoundedCornerShape(3.dp)),
-                color = Color.Black,
-                trackColor = Color(0xFFE5E7EB)
+                color = MaterialTheme.colorScheme.primary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant
             )
             
             Spacer(Modifier.height(12.dp))
@@ -475,7 +475,7 @@ private fun InProgressContent(
             Text(
                 text = "Hold the gesture steady...",
                 style = MaterialTheme.typography.bodySmall,
-                color = Color(0xFF5F6368)
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
@@ -489,9 +489,9 @@ private fun InProgressContent(
                 val isCurrent = step.number == state.step
                 
                 val dotColor = when {
-                    isCompleted -> Color(0xFF34A853) // Green for complete
-                    isCurrent -> Color(0xFF1A73E8)   // Blue for current
-                    else -> Color(0xFFDADCE0)        // Gray for upcoming
+                    isCompleted -> Success
+                    isCurrent -> MaterialTheme.colorScheme.primary
+                    else -> MaterialTheme.colorScheme.outline
                 }
                 
                 Box(
@@ -510,7 +510,7 @@ private fun InProgressContent(
             TextButton(onClick = onCancel) {
                 Text(
                     text = "Cancel", 
-                    color = Color(0xFFD93025), 
+                    color = MaterialTheme.colorScheme.error, 
                     style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold)
                 )
             }
@@ -518,7 +518,7 @@ private fun InProgressContent(
             TextButton(onClick = onSkip) {
                 Text(
                     text = "Skip (Demo)", 
-                    color = Color(0xFF1A73E8), 
+                    color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.labelLarge.copy(
                         fontWeight = FontWeight.Bold,
                         textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline
@@ -927,10 +927,10 @@ private fun CompleteContent(
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "glow")
     
-    // Animate between standard green and a lighter, more vibrant green
+    // Animate between primary and tertiary for a dynamic M3 look
     val color1 by infiniteTransition.animateColor(
-        initialValue = SignLinkConnected,
-        targetValue  = Color(0xFF00C853), // Standard Green A700
+        initialValue = MaterialTheme.colorScheme.primary,
+        targetValue  = MaterialTheme.colorScheme.tertiary,
         animationSpec = infiniteRepeatable(
             animation = tween(3000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
@@ -939,8 +939,8 @@ private fun CompleteContent(
     )
     
     val color2 by infiniteTransition.animateColor(
-        initialValue = Color(0xFFB9F6CA), // Light Green A100
-        targetValue  = Color(0xFFA7FFEB), // Light Teal/Green
+        initialValue = MaterialTheme.colorScheme.primaryContainer,
+        targetValue  = MaterialTheme.colorScheme.tertiaryContainer,
         animationSpec = infiniteRepeatable(
             animation = tween(4500, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
@@ -984,19 +984,19 @@ private fun CompleteContent(
                             .size(100.dp)
                             .scale(pulseScale)
                             .clip(CircleShape)
-                            .background(Color.White.copy(alpha = 0.2f))
+                            .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.2f))
                     )
                     
                     Box(
                         modifier = Modifier
                             .size(100.dp)
                             .clip(CircleShape)
-                            .background(Color.White.copy(alpha = 0.4f)),
+                            .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.4f)),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             imageVector = Icons.Filled.CheckCircle, null,
-                            tint = Color(0xFF004D40), // Deep green for contrast
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(60.dp)
                         )
                     }
@@ -1007,14 +1007,14 @@ private fun CompleteContent(
                 Text(
                     text  = "Calibration Complete!",
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                    color = Color(0xFF004D40),
+                    color = MaterialTheme.colorScheme.onPrimary,
                     textAlign = TextAlign.Center
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
                     text      = "Your device is now calibrated.\nYou're ready to use SignLink!",
                     style     = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                    color     = Color(0xFF004D40).copy(alpha = 0.8f),
+                    color     = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
                     textAlign = TextAlign.Center
                 )
             }
@@ -1024,8 +1024,8 @@ private fun CompleteContent(
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape    = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF004D40),
-                    contentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.onPrimary,
+                    contentColor = MaterialTheme.colorScheme.primary
                 )
             ) {
                 Text(
@@ -1097,7 +1097,7 @@ private fun FailedCalibrationContent(
                 onClick  = onRetry,
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape    = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1A73E8))
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Icon(Icons.Filled.Refresh, null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(8.dp))

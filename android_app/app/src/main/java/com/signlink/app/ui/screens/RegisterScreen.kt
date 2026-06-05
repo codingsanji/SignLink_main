@@ -17,6 +17,7 @@ package com.signlink.app.ui.screens
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -136,10 +137,17 @@ fun RegisterScreen(navController: NavHostController) {
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    colors = listOf(
-                        SignLinkTeal900,
-                        Color(0xFF001D26)
-                    )
+                    colors = if (isSystemInDarkTheme()) {
+                        listOf(
+                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
+                            MaterialTheme.colorScheme.background
+                        )
+                    } else {
+                        listOf(
+                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f),
+                            MaterialTheme.colorScheme.surface
+                        )
+                    }
                 )
             )
     ) {
@@ -150,8 +158,12 @@ fun RegisterScreen(navController: NavHostController) {
                     title = { },
                     navigationIcon = {
                         IconButton(onClick = { navController.navigateUp() }) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = Color.White)
-                        }
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = Color.Transparent
@@ -173,13 +185,13 @@ fun RegisterScreen(navController: NavHostController) {
                 Text(
                     text  = "Create account",
                     style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(
                     text  = "Join SignLink to start translating",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = SignLinkTeal300
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 Spacer(Modifier.height(32.dp))
@@ -231,11 +243,11 @@ fun RegisterScreen(navController: NavHostController) {
                     trailingIcon = {
                         IconButton(onClick = { passwordVisible = !passwordVisible }) {
                             Icon(
-                                imageVector = if (passwordVisible)
-                                    Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                                contentDescription = "Toggle password",
-                                tint = SignLinkTeal400
-                            )
+                            imageVector = if (passwordVisible)
+                                Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                            contentDescription = "Toggle password",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                         }
                     },
                     keyboardOptions = KeyboardOptions(
@@ -267,11 +279,11 @@ fun RegisterScreen(navController: NavHostController) {
                     trailingIcon = {
                         IconButton(onClick = { confirmVisible = !confirmVisible }) {
                             Icon(
-                                imageVector = if (confirmVisible)
-                                    Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                                contentDescription = "Toggle confirm password",
-                                tint = SignLinkTeal400
-                            )
+                            imageVector = if (confirmVisible)
+                                Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                            contentDescription = "Toggle confirm password",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                         }
                     },
                     keyboardOptions = KeyboardOptions(
@@ -298,17 +310,17 @@ fun RegisterScreen(navController: NavHostController) {
                             termsError = false
                         },
                         colors = CheckboxDefaults.colors(
-                            checkedColor   = SignLinkCyan,
-                            checkmarkColor = SignLinkTeal900,
-                            uncheckedColor = if (termsError) SignLinkDisconnected
-                            else SignLinkTeal400
+                            checkedColor   = MaterialTheme.colorScheme.primary,
+                            checkmarkColor = MaterialTheme.colorScheme.onPrimary,
+                            uncheckedColor = if (termsError) MaterialTheme.colorScheme.error
+                            else MaterialTheme.colorScheme.outline
                         )
                     )
                     Spacer(Modifier.width(4.dp))
                     Text(
                         text  = "I agree to the Terms of Service and Privacy Policy",
                         style = MaterialTheme.typography.bodySmall,
-                        color = if (termsError) SignLinkDisconnected else SignLinkTeal300
+                        color = if (termsError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 
@@ -323,15 +335,15 @@ fun RegisterScreen(navController: NavHostController) {
                         .height(56.dp),
                     shape  = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor         = SignLinkCyan,
-                        contentColor           = SignLinkTeal900,
-                        disabledContainerColor = SignLinkTeal600.copy(alpha = 0.5f)
+                        containerColor         = MaterialTheme.colorScheme.primary,
+                        contentColor           = MaterialTheme.colorScheme.onPrimary,
+                        disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
                     )
                 ) {
                     if (isLoading) {
                         CircularProgressIndicator(
                             modifier    = Modifier.size(22.dp),
-                            color       = SignLinkTeal900,
+                            color       = MaterialTheme.colorScheme.onPrimary,
                             strokeWidth = 2.5.dp
                         )
                     } else {
@@ -366,11 +378,11 @@ private fun PasswordStrengthBar(strength: Int) {
         else -> ""
     }
     val strengthColor = when (strength) {
-        1    -> SignLinkDisconnected
-        2    -> SignLinkConnecting
+        1    -> MaterialTheme.colorScheme.error
+        2    -> Warning
         3    -> Color(0xFFFFD700)
-        4    -> SignLinkConnected
-        else -> SignLinkTeal700
+        4    -> Success
+        else -> MaterialTheme.colorScheme.outline
     }
 
     Column {
@@ -382,7 +394,7 @@ private fun PasswordStrengthBar(strength: Int) {
             repeat(4) { index ->
                 val filled       = index < strength
                 val segmentColor by animateColorAsState(
-                    targetValue  = if (filled) strengthColor else SignLinkTeal700.copy(alpha = 0.4f),
+                    targetValue  = if (filled) strengthColor else MaterialTheme.colorScheme.outline.copy(alpha = 0.4f),
                     animationSpec = tween(300),
                     label        = "segment$index"
                 )

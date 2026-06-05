@@ -39,6 +39,7 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -54,6 +55,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -121,7 +123,7 @@ fun SpeechScreen(navController: NavHostController) {
                 title = {
                     Text(
                         "Speech Input",
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
                 },
                 navigationIcon = {
@@ -137,22 +139,53 @@ fun SpeechScreen(navController: NavHostController) {
                             else           Icons.Filled.VoiceOverOff,
                             contentDescription = "Auto-speak toggle",
                             tint = if (autoSpeak) MaterialTheme.colorScheme.primary
-                            else           MaterialTheme.colorScheme.onSurfaceVariant
+                            else           MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent
                 )
             )
         },
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = Color.Transparent
     ) { padding ->
-        LazyColumn(
-            modifier        = Modifier.fillMaxSize().padding(padding),
-            contentPadding  = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = if (isSystemInDarkTheme()) {
+                            listOf(
+                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
+                                MaterialTheme.colorScheme.background,
+                                MaterialTheme.colorScheme.background
+                            )
+                        } else {
+                            listOf(
+                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
+                                MaterialTheme.colorScheme.background,
+                                MaterialTheme.colorScheme.background
+                            )
+                        }
+                    )
+                )
         ) {
+            // Decorative orbs
+            Box(
+                modifier = Modifier
+                    .size(250.dp)
+                    .offset(x = (-100).dp, y = 50.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.05f))
+            )
+
+            LazyColumn(
+                modifier        = Modifier.fillMaxSize().padding(padding),
+                contentPadding  = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
 
             // ── Mic button section ────────────────────────────
             item {
@@ -272,6 +305,7 @@ fun SpeechScreen(navController: NavHostController) {
         }
     }
 }
+}
 
 // ── MicSection ────────────────────────────────────────────────
 /**
@@ -330,34 +364,35 @@ private fun MicSection(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Box(
-            modifier = Modifier.size(160.dp),
+            modifier = Modifier.size(200.dp),
             contentAlignment = Alignment.Center
         ) {
             // Pulsing rings (only while listening)
             if (isListening) {
                 Box(
                     modifier = Modifier
-                        .size(120.dp)
+                        .size(140.dp)
                         .scale(pulse1)
                         .clip(CircleShape)
-                        .background(SignLinkListening.copy(alpha = pulse1Alpha))
+                        .background(micColor.copy(alpha = pulse1Alpha))
                 )
                 Box(
                     modifier = Modifier
-                        .size(120.dp)
+                        .size(140.dp)
                         .scale(pulse2)
                         .clip(CircleShape)
-                        .background(SignLinkListening.copy(alpha = pulse2Alpha))
+                        .background(micColor.copy(alpha = pulse2Alpha))
                 )
             }
 
             // The mic button itself
             Surface(
                 onClick        = onMicTap,
-                modifier       = Modifier.size(100.dp),
+                modifier       = Modifier.size(110.dp),
                 shape          = CircleShape,
                 color          = micColor,
-                shadowElevation = if (isListening) 12.dp else 4.dp
+                shadowElevation = if (isListening) 16.dp else 4.dp,
+                border = androidx.compose.foundation.BorderStroke(2.dp, Color.White.copy(alpha = 0.2f))
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
@@ -368,7 +403,7 @@ private fun MicSection(
                         },
                         contentDescription = micLabel,
                         tint     = Color.White,
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(44.dp)
                     )
                 }
             }
@@ -401,16 +436,20 @@ private fun LiveTextDisplay(
     ) {
         Card(
             modifier  = Modifier.fillMaxWidth(),
-            shape     = RoundedCornerShape(16.dp),
+            shape     = RoundedCornerShape(20.dp),
             colors    = CardDefaults.cardColors(
                 containerColor = when (speechState) {
-                    is SpeechState.Error   -> MaterialTheme.colorScheme.errorContainer
-                    is SpeechState.NoSpeech -> MaterialTheme.colorScheme.surfaceVariant
-                    is SpeechState.Result  -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
-                    else                   -> MaterialTheme.colorScheme.surface
+                    is SpeechState.Error   -> MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.9f)
+                    is SpeechState.NoSpeech -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)
+                    is SpeechState.Result  -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.8f)
+                    else                   -> MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)
                 }
             ),
-            elevation = CardDefaults.cardElevation(1.dp)
+            elevation = CardDefaults.cardElevation(2.dp),
+            border = androidx.compose.foundation.BorderStroke(
+                1.dp,
+                MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f)
+            )
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
@@ -475,9 +514,15 @@ private fun TranscriptCard(
 
     Card(
         modifier  = Modifier.fillMaxWidth(),
-        shape     = RoundedCornerShape(12.dp),
-        colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(1.dp)
+        shape     = RoundedCornerShape(16.dp),
+        colors    = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
+        ),
+        elevation = CardDefaults.cardElevation(1.dp),
+        border = androidx.compose.foundation.BorderStroke(
+            1.dp,
+            MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f)
+        )
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
             // Text content
@@ -526,8 +571,14 @@ private fun TranscriptCard(
 private fun SpeechEmptyState(isAvailable: Boolean) {
     Card(
         modifier  = Modifier.fillMaxWidth(),
-        shape     = RoundedCornerShape(16.dp),
-        colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        shape     = RoundedCornerShape(20.dp),
+        colors    = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
+        ),
+        border = androidx.compose.foundation.BorderStroke(
+            1.dp,
+            MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f)
+        )
     ) {
         Column(
             modifier = Modifier.padding(24.dp),

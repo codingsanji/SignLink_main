@@ -29,7 +29,7 @@ fun UserTypeScreen(navController: NavHostController) {
     var selectedType by remember { mutableStateOf<String?>(null) }
 
     Scaffold(
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
                 title = { },
@@ -41,18 +41,18 @@ fun UserTypeScreen(navController: NavHostController) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = null,
-                            tint = Color(0xFF5F6368),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(Modifier.width(8.dp))
                         Text(
                             text = "Back",
-                            color = Color(0xFF5F6368),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 16.sp
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         }
     ) { padding ->
@@ -74,14 +74,14 @@ fun UserTypeScreen(navController: NavHostController) {
                         fontSize = 28.sp
                     ),
                     textAlign = TextAlign.Center,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Spacer(Modifier.height(12.dp))
                 Text(
                     text = "This helps us personalize your experience and enable the right features.",
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
-                    color = Color(0xFF5F6368),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 22.sp
                 )
             }
@@ -91,22 +91,22 @@ fun UserTypeScreen(navController: NavHostController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xFFE8F0FE))
-                    .border(1.dp, Color(0xFFD2E3FC), RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(12.dp))
                     .padding(16.dp)
             ) {
                 Row(verticalAlignment = Alignment.Top) {
                     Icon(
                         imageVector = Icons.Default.Info,
                         contentDescription = null,
-                        tint = Color(0xFF1967D2),
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(Modifier.width(12.dp))
                     Text(
                         text = "You can change this later in Settings. Your choice affects which features are shown.",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color(0xFF1967D2),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                         lineHeight = 20.sp
                     )
                 }
@@ -159,8 +159,10 @@ fun UserTypeScreen(navController: NavHostController) {
                     .height(56.dp),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (selectedType != null) Color(0xFF1A73E8) else Color(0xFFF1F3F4),
-                    contentColor = if (selectedType != null) Color.White else Color(0xFF9AA0A6)
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             ) {
                 Text(
@@ -183,11 +185,11 @@ fun UserTypeCard(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val borderColor = if (isSelected) Color(0xFF1A73E8) else Color(0xFFDADCE0)
-    val iconBgColor = if (isSelected) Color(0xFF1A73E8) else Color(0xFFF1F3F4)
-    val iconTintColor = if (isSelected) Color.White else Color(0xFF5F6368)
-    val titleColor = if (isSelected) Color(0xFF1A73E8) else Color.Black
-    val descColor = if (isSelected) Color(0xFF1A73E8).copy(alpha = 0.8f) else Color(0xFF5F6368)
+    val borderColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
+    val iconBgColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
+    val iconTintColor = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+    val titleColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+    val descColor = if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onSurfaceVariant
 
     Card(
         modifier = Modifier
@@ -200,7 +202,7 @@ fun UserTypeCard(
             )
             .clip(RoundedCornerShape(16.dp))
             .clickable { onClick() },
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Row(
@@ -258,7 +260,7 @@ fun UserTypeCard(
                 Icon(
                     imageVector = Icons.Default.CheckCircle,
                     contentDescription = null,
-                    tint = Color(0xFF1A73E8),
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(12.dp)
