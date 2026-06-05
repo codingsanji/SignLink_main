@@ -15,10 +15,16 @@ val SignLinkTeal100 = Color(0xFFADEAFF)
 val SignLinkCyan    = Color(0xFF00E5FF)
 val SignLinkCyanDark = Color(0xFF00B8D4)
 
-val SignLinkConnected    = Color(0xFF34A853)
+val SuccessListening    = Color(0xFF34A853) // Standard Success
 val SignLinkListening    = Color(0xFF4285F4)
 val SignLinkConnecting   = Color(0xFFFBBC05)
-val SignLinkDisconnected = Color(0xFFEA4335)
+val ErrorDisconnected    = Color(0xFFEA4335) // Standard Error
+
+// ── Theme-Aware Functional Colors ──────────────────────────────
+val SuccessDark = Color(0xFF81C784)
+val ErrorDark   = Color(0xFFE57373)
+val SuccessHC   = Color(0xFF00FF00)
+val ErrorHC     = Color(0xFFFF0000)
 
 // ── Primary: Deep Teal (The Soul of SignLink) ──────────────────
 val Primary10 = Color(0xFF001F26)

@@ -101,6 +101,11 @@ fun CalibrationScreen(navController: NavHostController) {
                             )
                         }
                     },
+                    actions = {
+                        IconButton(onClick = { navController.navigate(Screen.Settings.route) }) {
+                            Icon(Icons.Filled.Settings, "Settings", tint = MaterialTheme.colorScheme.primary)
+                        }
+                    },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.background
                     )
@@ -118,9 +123,10 @@ fun CalibrationScreen(navController: NavHostController) {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(padding)
-                            .padding(horizontal = 24.dp, vertical = 20.dp),
+                            .padding(horizontal = 24.dp)
+                            .verticalScroll(rememberScrollState()),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceEvenly
+                        verticalArrangement = Arrangement.Top
                     ) {
                         ReadyToStartContent(
                             onStart = { viewModel.startCalibration() },
@@ -140,9 +146,10 @@ fun CalibrationScreen(navController: NavHostController) {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(padding)
-                            .padding(horizontal = 24.dp, vertical = 20.dp),
+                            .padding(horizontal = 24.dp)
+                            .verticalScroll(rememberScrollState()),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceEvenly
+                        verticalArrangement = Arrangement.Top
                     ) {
                         InProgressContent(
                             state = state,
@@ -178,9 +185,10 @@ fun CalibrationScreen(navController: NavHostController) {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(padding)
-                            .padding(horizontal = 24.dp, vertical = 20.dp),
+                            .padding(horizontal = 24.dp)
+                            .verticalScroll(rememberScrollState()),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceEvenly
+                        verticalArrangement = Arrangement.Top
                     ) {
                         FailedCalibrationContent(
                             reason = state.reason,
@@ -209,13 +217,12 @@ private fun ReadyToStartContent(
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
+        verticalArrangement = Arrangement.Top
     ) {
-        // ... (hero icon etc)
-
         // Hero Icon
         Box(
             modifier = Modifier
+                .padding(top = 10.dp)
                 .size(72.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.primaryContainer),
@@ -229,7 +236,7 @@ private fun ReadyToStartContent(
             )
         }
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(24.dp))
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
@@ -252,17 +259,18 @@ private fun ReadyToStartContent(
             )
         }
 
-        // Gesture steps list - Wrapped in a weighted column to fill space but stay fixed
+        Spacer(Modifier.height(24.dp))
+
+        // Gesture steps list
         Column(
-            modifier = Modifier.fillMaxWidth().weight(1f).padding(vertical = 16.dp),
-            verticalArrangement = Arrangement.SpaceEvenly
+            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             CALIBRATION_STEPS.forEach { step ->
                 Card(
                     modifier = Modifier.fillMaxWidth().height(60.dp),
                     shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 16.dp).fillMaxSize(),
@@ -272,7 +280,7 @@ private fun ReadyToStartContent(
                         Box(
                             modifier = Modifier
                                 .size(32.dp)
-                                .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape),
+                                .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.1f), CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -294,13 +302,14 @@ private fun ReadyToStartContent(
             }
         }
 
+        Spacer(Modifier.height(24.dp))
+
         // Tip Card
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
                 .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f))
-                .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.5f), RoundedCornerShape(12.dp))
                 .padding(16.dp)
         ) {
             Text(
@@ -312,12 +321,13 @@ private fun ReadyToStartContent(
             )
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(48.dp))
 
         // Start Button
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(bottom = 24.dp)
         ) {
             Button(
                 onClick = onStart,
@@ -368,12 +378,13 @@ private fun InProgressContent(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly,
+        verticalArrangement = Arrangement.Top,
         modifier = Modifier.fillMaxSize()
     ) {
         // Hero Icon
         Box(
             modifier = Modifier
+                .padding(top = 10.dp)
                 .size(80.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.primaryContainer),
@@ -387,7 +398,7 @@ private fun InProgressContent(
             )
         }
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(20.dp))
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
@@ -404,6 +415,8 @@ private fun InProgressContent(
             )
         }
 
+        Spacer(Modifier.height(24.dp))
+
         // Large Countdown Circle - Fixed size to prevent shifting
         val remainingSeconds = when (val stepState = state.stepState) {
             is CalibrationStepState.Running -> {
@@ -418,7 +431,6 @@ private fun InProgressContent(
         Box(
             modifier = Modifier
                 .size(130.dp)
-                .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
                 .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f), CircleShape),
             contentAlignment = Alignment.Center
         ) {
@@ -430,6 +442,8 @@ private fun InProgressContent(
                 )
             )
         }
+
+        Spacer(Modifier.height(24.dp))
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -450,6 +464,8 @@ private fun InProgressContent(
                 lineHeight = 22.sp
             )
         }
+
+        Spacer(Modifier.height(24.dp))
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -479,6 +495,8 @@ private fun InProgressContent(
             )
         }
 
+        Spacer(Modifier.height(24.dp))
+
         // Step Dot Indicators
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -489,7 +507,7 @@ private fun InProgressContent(
                 val isCurrent = step.number == state.step
                 
                 val dotColor = when {
-                    isCompleted -> Success
+                    isCompleted -> SignLinkTheme.colors.success
                     isCurrent -> MaterialTheme.colorScheme.primary
                     else -> MaterialTheme.colorScheme.outline
                 }
@@ -503,9 +521,12 @@ private fun InProgressContent(
             }
         }
 
+        Spacer(Modifier.height(48.dp))
+
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = 24.dp)
         ) {
             TextButton(onClick = onCancel) {
                 Text(
@@ -561,7 +582,7 @@ private fun ActiveStepCard(
         shape     = RoundedCornerShape(20.dp),
         colors    = CardDefaults.cardColors(
             containerColor = if (isDone)
-                SignLinkConnected.copy(alpha = 0.08f)
+                SignLinkTheme.colors.success.copy(alpha = 0.08f)
             else
                 MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f)
         ),
@@ -581,7 +602,7 @@ private fun ActiveStepCard(
                         .size(52.dp)
                         .clip(CircleShape)
                         .background(
-                            if (isDone) SignLinkConnected.copy(alpha = 0.15f)
+                            if (isDone) SignLinkTheme.colors.success.copy(alpha = 0.15f)
                             else MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
                         ),
                     contentAlignment = Alignment.Center
@@ -589,7 +610,7 @@ private fun ActiveStepCard(
                     if (isDone) {
                         Icon(
                             Icons.Filled.Check, null,
-                            tint     = SignLinkConnected,
+                            tint     = SignLinkTheme.colors.success,
                             modifier = Modifier.size(28.dp)
                         )
                     } else {
@@ -603,13 +624,13 @@ private fun ActiveStepCard(
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),
-                        color = if (isDone) SignLinkConnected
+                        color = if (isDone) SignLinkTheme.colors.success
                         else MaterialTheme.colorScheme.onSurface
                     )
                     Text(
                         text  = statusMessage,
                         style = MaterialTheme.typography.bodySmall,
-                        color = if (isDone) SignLinkConnected
+                        color = if (isDone) SignLinkTheme.colors.success
                         else MaterialTheme.colorScheme.primary
                     )
                 }
@@ -636,7 +657,7 @@ private fun ActiveStepCard(
                     Text(
                         text  = "${(animatedProgress * 100).toInt()}%",
                         style = MaterialTheme.typography.labelSmall,
-                        color = if (isDone) SignLinkConnected
+                        color = if (isDone) SignLinkTheme.colors.success
                         else MaterialTheme.colorScheme.primary
                     )
                 }
@@ -646,7 +667,7 @@ private fun ActiveStepCard(
                         .fillMaxWidth()
                         .height(6.dp)
                         .clip(RoundedCornerShape(3.dp)),
-                    color         = if (isDone) SignLinkConnected
+                    color         = if (isDone) SignLinkTheme.colors.success
                     else MaterialTheme.colorScheme.primary,
                     trackColor    = MaterialTheme.colorScheme.surfaceVariant
                 )
@@ -671,9 +692,9 @@ private fun SignalMeterCard(
     )
 
     val barColor = when {
-        animatedStrength > 0.7f -> SignLinkConnected
+        animatedStrength > 0.7f -> SignLinkTheme.colors.success
         animatedStrength > 0.4f -> SignLinkConnecting
-        animatedStrength > 0.1f -> SignLinkDisconnected
+        animatedStrength > 0.1f -> SignLinkTheme.colors.error
         else -> MaterialTheme.colorScheme.surfaceVariant
     }
     val qualityLabel = when {
@@ -689,7 +710,7 @@ private fun SignalMeterCard(
         colors    = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        elevation = CardDefaults.cardElevation(1.dp)
+        elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -747,7 +768,7 @@ private fun ChannelQualityGrid(channelQualities: List<Float>) {
         modifier  = Modifier.fillMaxWidth(),
         shape     = RoundedCornerShape(14.dp),
         colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(1.dp)
+        elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -775,9 +796,9 @@ private fun ChannelQualityGrid(channelQualities: List<Float>) {
                                 label         = "ch$i"
                             )
                             val color = when {
-                                animQ > 0.7f -> SignLinkConnected
+                                animQ > 0.7f -> SignLinkTheme.colors.success
                                 animQ > 0.3f -> SignLinkConnecting
-                                animQ > 0f   -> SignLinkDisconnected
+                                animQ > 0f   -> SignLinkTheme.colors.error
                                 else         -> MaterialTheme.colorScheme.surfaceVariant
                             }
                             Row(
@@ -853,7 +874,7 @@ private fun StepChecklist(
         modifier  = Modifier.fillMaxWidth(),
         shape     = RoundedCornerShape(14.dp),
         colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(1.dp)
+        elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -881,7 +902,7 @@ private fun StepChecklist(
                             .clip(CircleShape)
                             .background(
                                 when {
-                                    isDone   -> SignLinkConnected.copy(alpha = 0.15f)
+                                    isDone   -> SignLinkTheme.colors.success.copy(alpha = 0.15f)
                                     isActive -> MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
                                     else     -> MaterialTheme.colorScheme.surfaceVariant
                                 }
@@ -890,7 +911,7 @@ private fun StepChecklist(
                     ) {
                         when {
                             isDone   -> Icon(Icons.Filled.Check, null,
-                                tint = SignLinkConnected, modifier = Modifier.size(16.dp))
+                                tint = SignLinkTheme.colors.success, modifier = Modifier.size(16.dp))
                             isActive -> CircularProgressIndicator(
                                 modifier    = Modifier.size(16.dp),
                                 color       = MaterialTheme.colorScheme.primary,
@@ -909,7 +930,7 @@ private fun StepChecklist(
                             fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Normal
                         ),
                         color = when {
-                            isDone   -> SignLinkConnected
+                            isDone   -> SignLinkTheme.colors.success
                             isActive -> MaterialTheme.colorScheme.onSurface
                             else     -> MaterialTheme.colorScheme.onSurfaceVariant
                         }
@@ -1047,27 +1068,31 @@ private fun FailedCalibrationContent(
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
+        verticalArrangement = Arrangement.Top
     ) {
+        Spacer(Modifier.height(10.dp))
+        
         Box(
             modifier = Modifier
                 .size(100.dp)
                 .clip(CircleShape)
-                .background(SignLinkDisconnected.copy(alpha = 0.1f)),
+                .background(SignLinkTheme.colors.error.copy(alpha = 0.1f)),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 Icons.Filled.ErrorOutline, null,
-                tint = SignLinkDisconnected,
+                tint = SignLinkTheme.colors.error,
                 modifier = Modifier.size(52.dp)
             )
         }
+
+        Spacer(Modifier.height(24.dp))
         
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text      = "Calibration Failed",
                 style     = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                color     = SignLinkDisconnected,
+                color     = SignLinkTheme.colors.error,
                 textAlign = TextAlign.Center
             )
             Spacer(Modifier.height(12.dp))
@@ -1075,7 +1100,7 @@ private fun FailedCalibrationContent(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 shape    = RoundedCornerShape(12.dp),
                 colors   = CardDefaults.cardColors(
-                    containerColor = SignLinkDisconnected.copy(alpha = 0.08f)
+                    containerColor = SignLinkTheme.colors.error.copy(alpha = 0.08f)
                 )
             ) {
                 Text(
@@ -1088,10 +1113,12 @@ private fun FailedCalibrationContent(
             }
         }
 
+        Spacer(Modifier.height(48.dp))
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
         ) {
             Button(
                 onClick  = onRetry,

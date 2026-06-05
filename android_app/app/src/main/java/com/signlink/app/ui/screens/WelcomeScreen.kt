@@ -94,9 +94,9 @@ fun WelcomeScreen(navController: NavHostController) {
                         )
                     } else {
                         listOf(
-                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f),
-                            MaterialTheme.colorScheme.surface,
-                            MaterialTheme.colorScheme.surface
+                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
+                            MaterialTheme.colorScheme.background,
+                            MaterialTheme.colorScheme.background
                         )
                     }
                 )
@@ -173,7 +173,7 @@ fun WelcomeScreen(navController: NavHostController) {
                             modifier = Modifier.size(90.dp),
                             shape = CircleShape,
                             color = MaterialTheme.colorScheme.primary,
-                            shadowElevation = 8.dp
+                            shadowElevation = 0.dp
                         ) {
                             Box(contentAlignment = Alignment.Center) {
                                 Icon(
@@ -269,7 +269,12 @@ fun WelcomeScreen(navController: NavHostController) {
                             containerColor = MaterialTheme.colorScheme.primary,
                             contentColor   = MaterialTheme.colorScheme.onPrimary
                         ),
-                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
+                        elevation = ButtonDefaults.buttonElevation(
+                            defaultElevation = 0.dp,
+                            pressedElevation = 0.dp,
+                            focusedElevation = 0.dp,
+                            hoveredElevation = 0.dp
+                        )
                     ) {
                         Text(
                             text       = "Get Started",
@@ -296,11 +301,7 @@ fun WelcomeScreen(navController: NavHostController) {
 private fun FeaturePill(emoji: String, label: String) {
     Surface(
         shape = RoundedCornerShape(50.dp),
-        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f),
-        border = androidx.compose.foundation.BorderStroke(
-            width = 1.dp,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.15f)
-        )
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),

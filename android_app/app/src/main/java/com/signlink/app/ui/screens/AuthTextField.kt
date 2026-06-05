@@ -98,10 +98,11 @@ fun AuthTextField(
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
                 errorContainerColor     = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
 
-                // Border colors
-                focusedBorderColor   = MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-                errorBorderColor     = MaterialTheme.colorScheme.error,
+                // Border colors (Flat design: no borders)
+                focusedBorderColor   = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                errorBorderColor     = Color.Transparent,
+                disabledBorderColor  = Color.Transparent,
 
                 // Label colors
                 focusedLabelColor   = MaterialTheme.colorScheme.primary,

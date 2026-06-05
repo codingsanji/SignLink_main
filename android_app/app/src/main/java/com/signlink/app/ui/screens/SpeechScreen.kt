@@ -64,6 +64,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.signlink.app.navigation.Screen
 import com.signlink.app.ui.theme.*
 import com.signlink.app.utils.SpeechState
 import com.signlink.app.utils.TtsState
@@ -141,6 +142,9 @@ fun SpeechScreen(navController: NavHostController) {
                             tint = if (autoSpeak) MaterialTheme.colorScheme.primary
                             else           MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                         )
+                    }
+                    IconButton(onClick = { navController.navigate(Screen.Settings.route) }) {
+                        Icon(Icons.Filled.Settings, "Settings")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -391,8 +395,7 @@ private fun MicSection(
                 modifier       = Modifier.size(110.dp),
                 shape          = CircleShape,
                 color          = micColor,
-                shadowElevation = if (isListening) 16.dp else 4.dp,
-                border = androidx.compose.foundation.BorderStroke(2.dp, Color.White.copy(alpha = 0.2f))
+                shadowElevation = 0.dp
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
@@ -445,11 +448,7 @@ private fun LiveTextDisplay(
                     else                   -> MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)
                 }
             ),
-            elevation = CardDefaults.cardElevation(2.dp),
-            border = androidx.compose.foundation.BorderStroke(
-                1.dp,
-                MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f)
-            )
+            elevation = CardDefaults.cardElevation(0.dp)
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
@@ -459,7 +458,7 @@ private fun LiveTextDisplay(
                 val (label, labelColor) = when (speechState) {
                     is SpeechState.Listening -> "Listening..." to SignLinkListening
                     is SpeechState.Partial   -> "Transcribing..." to MaterialTheme.colorScheme.primary
-                    is SpeechState.Result    -> "Done" to SignLinkConnected
+                    is SpeechState.Result    -> "Done" to SignLinkTheme.colors.success
                     is SpeechState.NoSpeech  -> "No speech detected" to MaterialTheme.colorScheme.onSurfaceVariant
                     is SpeechState.Error     -> "Error" to MaterialTheme.colorScheme.error
                     else                     -> "" to MaterialTheme.colorScheme.onSurface
@@ -518,11 +517,7 @@ private fun TranscriptCard(
         colors    = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
         ),
-        elevation = CardDefaults.cardElevation(1.dp),
-        border = androidx.compose.foundation.BorderStroke(
-            1.dp,
-            MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f)
-        )
+        elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
             // Text content
@@ -574,21 +569,20 @@ private fun SpeechEmptyState(isAvailable: Boolean) {
         shape     = RoundedCornerShape(20.dp),
         colors    = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
-        ),
-        border = androidx.compose.foundation.BorderStroke(
-            1.dp,
-            MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f)
         )
     ) {
         Column(
-            modifier = Modifier.padding(24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Text("🎙️", fontSize = 40.sp)
             Text(
                 text  = "No transcripts yet",
-                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold)
+                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+                textAlign = TextAlign.Center
             )
             Text(
                 text  = if (isAvailable)

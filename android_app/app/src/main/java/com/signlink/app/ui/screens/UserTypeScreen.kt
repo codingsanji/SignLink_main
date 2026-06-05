@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
@@ -52,6 +54,15 @@ fun UserTypeScreen(navController: NavHostController) {
                         )
                     }
                 },
+                actions = {
+                    IconButton(onClick = { navController.navigate(Screen.Settings.route) }) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = "Settings",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         }
@@ -61,9 +72,10 @@ fun UserTypeScreen(navController: NavHostController) {
                 .fillMaxSize()
                 .padding(padding)
                 .padding(horizontal = 24.dp)
-                .padding(top = 15.dp, bottom = 15.dp), // Added top/bottom padding for icon spacing
+                .padding(top = 10.dp, bottom = 24.dp)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
+            verticalArrangement = Arrangement.Top
         ) {
             // ── HEADER ────────────────────────────────────────
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -86,13 +98,14 @@ fun UserTypeScreen(navController: NavHostController) {
                 )
             }
 
+            Spacer(Modifier.height(24.dp))
+
             // ── INFO BOX ──────────────────────────────────────
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
                     .background(MaterialTheme.colorScheme.secondaryContainer)
-                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(12.dp))
                     .padding(16.dp)
             ) {
                 Row(verticalAlignment = Alignment.Top) {
@@ -111,6 +124,8 @@ fun UserTypeScreen(navController: NavHostController) {
                     )
                 }
             }
+
+            Spacer(Modifier.height(24.dp))
 
             // ── USER TYPE CARDS ───────────────────────────────
             Column(
@@ -150,13 +165,15 @@ fun UserTypeScreen(navController: NavHostController) {
                 )
             }
 
+            Spacer(Modifier.height(48.dp))
+
             // ── CONTINUE BUTTON ───────────────────────────────
             Button(
                 onClick = { navController.navigate(Screen.PairDevice.route) },
                 enabled = selectedType != null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp),
+                    .height(56.dp), // Removed extra top padding
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
@@ -185,7 +202,6 @@ fun UserTypeCard(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val borderColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
     val iconBgColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
     val iconTintColor = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
     val titleColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
@@ -195,14 +211,13 @@ fun UserTypeCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(92.dp) // Fixed height to prevent shifting
-            .border(
-                width = 2.dp, // Constant width to prevent shifting
-                color = borderColor,
-                shape = RoundedCornerShape(16.dp)
-            )
             .clip(RoundedCornerShape(16.dp))
             .clickable { onClick() },
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+            else MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Row(

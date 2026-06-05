@@ -9,12 +9,34 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.signlink.app.data.local.ThemeMode
+
+// ── Custom Theme Extensions ──────────────────────────────────
+data class SignLinkColors(
+    val success: Color,
+    val error: Color
+)
+
+val LocalSignLinkColors = staticCompositionLocalOf {
+    SignLinkColors(
+        success = Success,
+        error = Error
+    )
+}
+
+object SignLinkTheme {
+    val colors: SignLinkColors
+        @Composable
+        get() = LocalSignLinkColors.current
+}
 
 // ── Light Color Scheme ────────────────────────────────────────
 private val LightColorScheme = lightColorScheme(
@@ -62,8 +84,8 @@ private val DarkColorScheme = darkColorScheme(
     tertiaryContainer = Color(0xFF6D5677),
     onTertiaryContainer = Color(0xFFF6D9FF),
     
-    error = Color(0xFFF2B8B5),
-    onError = Color(0xFF601410),
+    error = Color(0xFFE57373), // Better blending red for Dark Mode
+    onError = Color(0xFF310001),
     
     background = Color(0xFF001D26), // SignLinkTeal900
     onBackground = Color(0xFFADEAFF),
@@ -84,18 +106,26 @@ private val HighContrastColorScheme = darkColorScheme(
     onBackground = HighContrastText,
     surface = HighContrastSurface,
     onSurface = HighContrastText,
-    outline = HighContrastAccent
+    outline = HighContrastAccent,
+    error = Color.Red,
+    onError = Color.Black
 )
 
 @Composable
 fun SignLinkTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    highContrast: Boolean = false,
+    themeMode: ThemeMode = ThemeMode.SYSTEM,
     dynamicColor: Boolean = false, // Disabled to keep the branded blue theme as default
     content: @Composable () -> Unit
 ) {
+    val darkTheme = when (themeMode) {
+        ThemeMode.LIGHT -> false
+        ThemeMode.DARK -> true
+        ThemeMode.HIGH_CONTRAST -> true
+        ThemeMode.SYSTEM -> isSystemInDarkTheme()
+    }
+
     val colorScheme = when {
-        highContrast -> HighContrastColorScheme
+        themeMode == ThemeMode.HIGH_CONTRAST -> HighContrastColorScheme
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context)
@@ -117,6 +147,15 @@ fun SignLinkTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = SignLinkTypography,
-        content = content
+        content = {
+            val customColors = when {
+                themeMode == ThemeMode.HIGH_CONTRAST -> SignLinkColors(SuccessHC, ErrorHC)
+                darkTheme -> SignLinkColors(SuccessDark, ErrorDark)
+                else -> SignLinkColors(Success, Error)
+            }
+            CompositionLocalProvider(LocalSignLinkColors provides customColors) {
+                content()
+            }
+        }
     )
 }
