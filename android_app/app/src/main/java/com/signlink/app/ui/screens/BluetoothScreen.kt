@@ -659,17 +659,18 @@ private fun ConnectedContent(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Green check icon (Circular)
+            val statusColor = if (isSystemInDarkTheme()) SignLinkTheme.colors.success else Color(0xFF008955)
             Box(
                 modifier = Modifier
                     .size(100.dp)
                     .clip(CircleShape)
-                    .background(SignLinkTheme.colors.success.copy(alpha = 0.12f)),
+                    .background(statusColor.copy(alpha = 0.12f)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     Icons.Filled.Check,
                     contentDescription = null,
-                    tint = SignLinkTheme.colors.success,
+                    tint = statusColor,
                     modifier = Modifier.size(48.dp)
                 )
             }
@@ -684,7 +685,7 @@ private fun ConnectedContent(
                         fontWeight = FontWeight.Bold,
                         letterSpacing = (-0.5).sp
                     ),
-                    color = SignLinkTheme.colors.success
+                    color = statusColor
                 )
                 Text(
                     text      = device.displayName,

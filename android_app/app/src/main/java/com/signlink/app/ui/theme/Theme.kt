@@ -47,7 +47,7 @@ private val LightColorScheme = lightColorScheme(
     
     secondary = Color(0xFF006173), // SignLinkTeal500
     onSecondary = Color.White,
-    secondaryContainer = Color(0xFFD6F6FF), // Primary95
+    secondaryContainer = Color(0xFFADEAFF), // SignLinkTeal100
     onSecondaryContainer = Color(0xFF00363F), // Primary20
     
     tertiary = Color(0xFF6D5677),

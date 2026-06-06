@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -54,6 +55,7 @@ fun HomeScreen(navController: NavHostController) {
         FeatureTile("Calibrate", Icons.Filled.Tune, "Set up your device", Screen.Calibration.route, isConnected),
         FeatureTile("Translate", Icons.Filled.SignLanguage, "Sign → Text & Speech", Screen.Translation.route, isConnected),
         FeatureTile("Speech Input", Icons.Filled.Mic, "Voice to text", Screen.Speech.route, true),
+        FeatureTile("Text to Speech", Icons.AutoMirrored.Filled.VolumeUp, "Type to speak", Screen.TextToSpeech.route, true),
         FeatureTile("History", Icons.Filled.History, "Past conversations", Screen.ChatHistory.route, true),
         FeatureTile("Learn Signs", Icons.Filled.School, "Practice & learn", Screen.Learning.route, true)
     )
@@ -249,42 +251,47 @@ private fun FeatureTileCard(feature: FeatureTile, modifier: Modifier = Modifier,
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Box(
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Column(
                 modifier = Modifier
-                    .size(48.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = opacity * 0.5f)),
-                contentAlignment = Alignment.Center
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Icon(
-                    feature.icon,
-                    null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = opacity),
-                    modifier = Modifier.size(26.dp)
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = opacity * 0.5f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        feature.icon,
+                        null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = opacity),
+                        modifier = Modifier.size(26.dp)
+                    )
+                }
+                Text(
+                    feature.title,
+                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = opacity)
+                )
+                Text(
+                    feature.description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = opacity),
+                    lineHeight = 18.sp
                 )
             }
-            Text(
-                feature.title,
-                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = opacity)
-            )
-            Text(
-                feature.description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = opacity),
-                lineHeight = 18.sp
-            )
             if (!feature.enabled) {
                 Text(
                     "🔗 Connect device first",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
+                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
+                    color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f),
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(16.dp)
                 )
             }
         }
